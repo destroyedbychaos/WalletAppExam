@@ -9,7 +9,7 @@ using WalletApp.DAL.Models;
 
 namespace WalletApp.DAL.Repositories.SpendingCategoryRepository
 {
-    public class SpendingCategoryRepository
+    public class SpendingCategoryRepository : ISpendingCategoryRepository
     {
         private readonly AppDbContext _appDbContext;
         public SpendingCategoryRepository(AppDbContext appDbContext) 

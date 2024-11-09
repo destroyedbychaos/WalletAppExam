@@ -9,6 +9,11 @@ using WalletApp.DAL.Models.Identity;
 using WalletApp.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using WalletApp.DAL.Repositories.CardRepository;
+using WalletApp.DAL.Repositories.CurrencyRepository;
+using WalletApp.DAL.Repositories.IncomeSourceRepository;
+using WalletApp.DAL.Repositories.SpendingCategoryRepository;
+using WalletApp.DAL.Repositories.WalletRepository;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -68,8 +73,15 @@ builder.Services.AddAuthentication(options =>
 // Add services
 
 // Add repositories
+//builder.Services.AddScoped<IuserRepository, UserRepository>(); !!
+builder.Services.AddScoped<ICardRepository, CardRepository>();
+builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
+builder.Services.AddScoped<IIncomeSourceRepository, IncomeSourceRepository>();
+builder.Services.AddScoped<ISpendingCategoryRepository, SpendingCategoryRepository>();
+builder.Services.AddScoped<IWalletRepository, WalletRepository>();
 
 // Add automapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

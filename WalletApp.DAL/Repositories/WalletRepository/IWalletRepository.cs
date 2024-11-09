@@ -8,7 +8,7 @@ using WalletApp.DAL.Models;
 
 namespace WalletApp.DAL.Repositories.WalletRepository
 {
-    public interface IWalletReporitory
+    public interface IWalletRepository
     {
         Task<Wallet?> GetByIdAsync(string id);
         Task<Wallet?> GetByUsernameAsync(string name);

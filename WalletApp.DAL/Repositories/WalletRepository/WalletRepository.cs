@@ -13,7 +13,7 @@ using WalletApp.DAL.Models.Identity;
 
 namespace WalletApp.DAL.Repositories.WalletRepository
 {
-    public class WalletRepository : IWalletReporitory
+    public class WalletRepository : IWalletRepository
     {
         private readonly AppDbContext _appDbContext;
         private readonly UserManager<User> _userManager;
