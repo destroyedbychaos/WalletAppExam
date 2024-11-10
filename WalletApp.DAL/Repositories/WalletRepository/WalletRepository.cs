@@ -23,6 +23,10 @@ namespace WalletApp.DAL.Repositories.WalletRepository
             _userManager = userManager;
 
         }
+        public async Task<List<Wallet?>> GetAllAsync()
+        {
+            return await _appDbContext.Wallets.ToListAsync();
+        }
         public async Task<Wallet?> GetByIdAsync(string id)
         {
             return await _appDbContext.Wallets.FirstOrDefaultAsync(w => w.UserId == id);

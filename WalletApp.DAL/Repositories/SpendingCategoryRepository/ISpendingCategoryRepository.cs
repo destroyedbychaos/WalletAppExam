@@ -9,6 +9,7 @@ namespace WalletApp.DAL.Repositories.SpendingCategoryRepository
 {
     public interface ISpendingCategoryRepository
     {
+        Task<List<SpendingCategory?>> GetAll();
         Task<SpendingCategory?> GetByIdAsync(string id);
         Task<SpendingCategory?> GetByNameAsync(string name);
         Task CreateAsync(SpendingCategory spendingCategory);

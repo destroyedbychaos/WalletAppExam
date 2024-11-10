@@ -16,6 +16,10 @@ namespace WalletApp.DAL.Repositories.SpendingCategoryRepository
         {
             _appDbContext = appDbContext;
         }
+        public async Task<List<SpendingCategory?>> GetAll()
+        {
+            return await _appDbContext.SpendingCategories.ToListAsync();
+        }
         public async Task<SpendingCategory?> GetByIdAsync(string id)
         {
             return await _appDbContext.SpendingCategories.FirstOrDefaultAsync(sc => sc.Id == id);

@@ -10,6 +10,7 @@ namespace WalletApp.DAL.Repositories.WalletRepository
 {
     public interface IWalletRepository
     {
+        Task<List<Wallet?>> GetAllAsync();
         Task<Wallet?> GetByIdAsync(string id);
         Task<Wallet?> GetByUsernameAsync(string name);
         Task CreateAsync(Wallet wallet);

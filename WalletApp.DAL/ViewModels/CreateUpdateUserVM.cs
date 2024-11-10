@@ -17,5 +17,6 @@ namespace WalletApp.DAL.ViewModels
         public bool PhoneNumberConfirmed { get; set; } = false;
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        public required string Role {  get; set; }
     }
 }

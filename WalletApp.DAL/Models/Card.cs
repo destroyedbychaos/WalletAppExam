@@ -13,7 +13,7 @@ namespace WalletApp.DAL.Models
         public string Id { get; set; }
 
         [MaxLength(16)]
-        public int CardNumber { get; set; }
+        public string CardNumber { get; set; }
         public DateOnly ExpirationDate { get; set; }
         public decimal Balance { get; set; }
         public string WalletId { get; set; }

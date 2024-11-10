@@ -20,6 +20,10 @@ namespace WalletApp.DAL.Repositories.CardRepository
             _appDbContext = appDbContext;
             _userManager = userManager;
         }
+        public async Task<IEnumerable<Card?>> GetAll()
+        {
+            return await _appDbContext.Cards.ToListAsync();
+        }
         public async Task<Card?> GetByIdAsync(string id)
         {
             return await _appDbContext.Cards.FirstOrDefaultAsync(c => c.Id == id);
@@ -28,6 +32,10 @@ namespace WalletApp.DAL.Repositories.CardRepository
         {
             var user = await _userManager.FindByNameAsync(name);
             return await _appDbContext.Cards.FirstOrDefaultAsync(c => c.UserId == user.Id);
+        }
+        public async Task<Card?> GetByCardNumberAsync(string cardNumber)
+        {
+            return await _appDbContext.Cards.FirstOrDefaultAsync(c => c.CardNumber == cardNumber);
         }
         public async Task CreateAsync(Card card)
         {
