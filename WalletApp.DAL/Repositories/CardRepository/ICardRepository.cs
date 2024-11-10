@@ -12,7 +12,7 @@ namespace WalletApp.DAL.Repositories.CardRepository
         Task<IEnumerable<Card>> GetAll();
         Task<Card?> GetByIdAsync(string id);
         Task<Card?> GetByUsernameAsync(string name);
-        Task<Card?> GetByCardNumberAsync(string cardNumber);
+        Task<Card?> GetByCardNumberAsync(int cardNumber);
         Task CreateAsync(Card card);
         Task UpdateAsync(Card card);
         Task DeleteAsync(string id);

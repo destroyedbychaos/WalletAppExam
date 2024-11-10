@@ -13,7 +13,7 @@ namespace WalletApp.BLL.Services.CardService
         Task<ServiceResponse> GetAllAsync();
         Task<ServiceResponse> GetByIdAsync(string id);
         Task<ServiceResponse> GetByUsernameAsync(string name);
-        Task<ServiceResponse> GetByCardNumberAsync(string cardNumber);
+        Task<ServiceResponse> GetByCardNumberAsync(int cardNumber);
         Task<ServiceResponse> CreateAsync(CardVM model);
         Task<ServiceResponse> UpdateAsync(CardVM model);
         Task<ServiceResponse> DeleteAsync(string id);

@@ -51,7 +51,7 @@ namespace WalletApp.BLL.Services.CardService
             }
             return ServiceResponse.BadRequestResponse("Card not found");
         }
-        public async Task<ServiceResponse> GetByCardNumberAsync(string cardNumber)
+        public async Task<ServiceResponse> GetByCardNumberAsync(int cardNumber)
         {
             var card = await _cardRepository.GetByCardNumberAsync(cardNumber);
             if (card != null)

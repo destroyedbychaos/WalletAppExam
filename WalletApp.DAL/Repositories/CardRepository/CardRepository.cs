@@ -33,7 +33,7 @@ namespace WalletApp.DAL.Repositories.CardRepository
             var user = await _userManager.FindByNameAsync(name);
             return await _appDbContext.Cards.FirstOrDefaultAsync(c => c.UserId == user.Id);
         }
-        public async Task<Card?> GetByCardNumberAsync(string cardNumber)
+        public async Task<Card?> GetByCardNumberAsync(int cardNumber)
         {
             return await _appDbContext.Cards.FirstOrDefaultAsync(c => c.CardNumber == cardNumber);
         }

@@ -83,7 +83,7 @@ namespace WalletApp.BLL.Services.WalletService
             {
                 wallet.Cards.Add(card);
                 await _walletRepository.UpdateAsync(wallet);
-                return ServiceResponse.OkResponse("Card added to wallet");
+                return ServiceResponse.OkResponse("Card added to wallet", wallet);
             }
             return ServiceResponse.BadRequestResponse("Card not added to wallet");
 
