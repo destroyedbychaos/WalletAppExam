@@ -44,7 +44,7 @@ namespace WalletApp.API.Controllers
             }
             return GetResult(ServiceResponse.BadRequestResponse("No wallet fetched"));
         }
-        [HttpDelete]
+        [HttpDelete("DeleteWallet")]
         public async Task<IActionResult> DeleteAsync(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -54,7 +54,7 @@ namespace WalletApp.API.Controllers
             var response = await _walletService.DeleteAsync(id);
             return GetResult(response);
         }
-        [HttpPost]
+        [HttpPost("CreateWallet")]
         public async Task<IActionResult> CreateAsync(WalletVM model)
         {
             if(string.IsNullOrEmpty(model.Name)) 
@@ -68,7 +68,7 @@ namespace WalletApp.API.Controllers
             var response = await _walletService.CreateAsync(model);
             return GetResult(response);
         }
-        [HttpPost]
+        [HttpPost("UpdateWallet")]
         public async Task<IActionResult> UpdateAsync(WalletVM model)
         {
             if (string.IsNullOrEmpty(model.Name))
@@ -82,154 +82,157 @@ namespace WalletApp.API.Controllers
             var response = await _walletService.UpdateAsync(model);
             return GetResult(response);
         }
-        [HttpPost]
-        public async Task<IActionResult> AddCardToWallet(WalletVM walletModel, CardVM cardModel)
+        [HttpPost("AddCardToWallet")]
+        public async Task<IActionResult> AddCardToWallet(WalletCardVM model)
         {
-            if (string.IsNullOrEmpty(walletModel.Name))
+            if (string.IsNullOrEmpty(model.Wallet.Name))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Wallet cannot be unnamed"));
             }
-            if (string.IsNullOrEmpty(walletModel.Id))
+            if (string.IsNullOrEmpty(model.Wallet.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Wallet Id cannot be empty"));
             }
-            if (string.IsNullOrWhiteSpace(cardModel.Id))
+            if (string.IsNullOrWhiteSpace(model.Card.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Card must have an id"));
             }
-            if (string.IsNullOrEmpty(cardModel.CurrencyCode))
+            if (string.IsNullOrEmpty(model.Card.CurrencyCode))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Card must have a currency"));
             }
-            if (cardModel.CardNumber.ToString().Length > 16 || cardModel.CardNumber.ToString().Length < 16)
+            if (model.Card.CardNumber.ToString().Length > 16 || model.Card.CardNumber.ToString().Length < 16)
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Invalid card number"));
             }
-            if (cardModel.ExpirationDate.Year < DateTime.UtcNow.Year && cardModel.ExpirationDate.Month < DateTime.UtcNow.Month)
+            if (model.Card.ExpirationDate.Year < DateTime.UtcNow.Year && model.Card.ExpirationDate.Month < DateTime.UtcNow.Month)
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Invalid card expiration date"));
             }
-            var response = await _walletService.AddCardToWalletAsync(walletModel, cardModel);
+
+            /////////
+            
+            var response = await _walletService.AddCardToWalletAsync(model.Wallet, model.Card);
             return GetResult(response);
         }
-        [HttpDelete]
-        public async Task<IActionResult> DeleteCardFromWallet(WalletVM walletModel, CardVM cardModel)
+        [HttpDelete("DeleteCardFromWallet")]
+        public async Task<IActionResult> DeleteCardFromWallet(WalletCardVM model)
         {
-            if (string.IsNullOrEmpty(walletModel.Name))
+            if (string.IsNullOrEmpty(model.Wallet.Name))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Wallet cannot be unnamed"));
             }
-            if (string.IsNullOrEmpty(walletModel.Id))
+            if (string.IsNullOrEmpty(model.Wallet.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Wallet Id cannot be empty"));
             }
-            if (string.IsNullOrWhiteSpace(cardModel.Id))
+            if (string.IsNullOrWhiteSpace(model.Card.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Card must have an id"));
             }
-            if (string.IsNullOrEmpty(cardModel.CurrencyCode))
+            if (string.IsNullOrEmpty(model.Card.CurrencyCode))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Card must have a currency"));
             }
-            if (cardModel.CardNumber.ToString().Length > 16 || cardModel.CardNumber.ToString().Length < 16)
+            if (model.Card.CardNumber.ToString().Length > 16 || model.Card.CardNumber.ToString().Length < 16)
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Invalid card number"));
             }
-            if (cardModel.ExpirationDate.Year < DateTime.UtcNow.Year && cardModel.ExpirationDate.Month < DateTime.UtcNow.Month)
+            if (model.Card.ExpirationDate.Year < DateTime.UtcNow.Year && model.Card.ExpirationDate.Month < DateTime.UtcNow.Month)
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Invalid card expiration date"));
             }
 
             /////////////////
 
-            var response = await _walletService.DeleteCardFromWalletAsync(walletModel, cardModel);
+            var response = await _walletService.DeleteCardFromWalletAsync(model.Wallet, model.Card);
             return GetResult(response);
         }
-        [HttpPost]
-        public async Task<IActionResult> AddIncomeSourceToWallet(WalletVM walletModel, IncomeSourceVM incomeSourceModel)
+        [HttpPost("AddIncomeSourceToWallet")]
+        public async Task<IActionResult> AddIncomeSourceToWallet(WalletIncomeSourceVM model)
         {
-            if (string.IsNullOrEmpty(walletModel.Name))
+            if (string.IsNullOrEmpty(model.Wallet.Name))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Wallet cannot be unnamed"));
             }
-            if (string.IsNullOrEmpty(walletModel.Id))
+            if (string.IsNullOrEmpty(model.Wallet.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Wallet Id cannot be empty"));
             }
-            if (string.IsNullOrEmpty(incomeSourceModel.Id)){
+            if (string.IsNullOrEmpty(model.IncomeSource.Id)){
                 return GetResult(ServiceResponse.BadRequestResponse("Income source Id cannot be empty"));
             }
-            if (string.IsNullOrEmpty(incomeSourceModel.Name))
+            if (string.IsNullOrEmpty(model.IncomeSource.Name))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Income source name cannot be empty"));
             }
-            var response = await _walletService.AddIncomeSourceToWalletAsync(walletModel, incomeSourceModel);
+            var response = await _walletService.AddIncomeSourceToWalletAsync(model.Wallet, model.IncomeSource);
             return GetResult(response);
         }
-        [HttpDelete]
-        public async Task<IActionResult> DeleteIncomeSourceFromWallet(WalletVM walletModel, IncomeSourceVM incomeSourceModel)
+        [HttpDelete("DeleteIncomeSourceFromWallet")]
+        public async Task<IActionResult> DeleteIncomeSourceFromWallet(WalletIncomeSourceVM model)
         {
-            if (string.IsNullOrEmpty(walletModel.Name))
+            if (string.IsNullOrEmpty(model.Wallet.Name))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Wallet cannot be unnamed"));
             }
-            if (string.IsNullOrEmpty(walletModel.Id))
+            if (string.IsNullOrEmpty(model.Wallet.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Wallet Id cannot be empty"));
             }
-            if (string.IsNullOrEmpty(incomeSourceModel.Id))
+            if (string.IsNullOrEmpty(model.IncomeSource.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Income source Id cannot be empty"));
             }
-            if (string.IsNullOrEmpty(incomeSourceModel.Name))
+            if (string.IsNullOrEmpty(model.IncomeSource.Name))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Income source name cannot be empty"));
             }
-            var response = await _walletService.DeleteIncomeSourceFromWalletAsync(walletModel, incomeSourceModel);
+            var response = await _walletService.DeleteIncomeSourceFromWalletAsync(model.Wallet,model.IncomeSource);
             return GetResult(response);
         }
-        [HttpPost]
-        public async Task<IActionResult> AddSpendingCategoryToWallet(WalletVM walletModel, SpendingCategoryVM spendingCategoryModel)
+        [HttpPost("AddSpendingCategoryToWallet")]
+        public async Task<IActionResult> AddSpendingCategoryToWallet(WalletSpendingCategoryVM model)
         {
-            if (string.IsNullOrEmpty(walletModel.Name))
+            if (string.IsNullOrEmpty(model.Wallet.Name))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Wallet cannot be unnamed"));
             }
-            if (string.IsNullOrEmpty(walletModel.Id))
+            if (string.IsNullOrEmpty(model.Wallet.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Wallet Id cannot be empty"));
             }
-            if (string.IsNullOrEmpty(spendingCategoryModel.Id))
+            if (string.IsNullOrEmpty(model.SpendingCategory.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Spending category Id cannot be empty"));
             }
-            if (string.IsNullOrEmpty(spendingCategoryModel.Name))
+            if (string.IsNullOrEmpty(model.SpendingCategory.Name))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Spending category name cannot be empty"));
             }
-            var response = await _walletService.AddSpendingCategoryToWalletAsync(walletModel, spendingCategoryModel);
+            var response = await _walletService.AddSpendingCategoryToWalletAsync(model.Wallet, model.SpendingCategory);
             return GetResult(response);
         }
-        [HttpDelete]
-        public async Task<IActionResult> DeleteSpendingCategoryFromWallet(WalletVM walletModel, SpendingCategoryVM spendingCategoryModel)
+        [HttpDelete("DeleteSpendingCategoryFromWallet")]
+        public async Task<IActionResult> DeleteSpendingCategoryFromWallet(WalletSpendingCategoryVM model)
         {
-            if (string.IsNullOrEmpty(walletModel.Name))
+            if (string.IsNullOrEmpty(model.Wallet.Name))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Wallet cannot be unnamed"));
             }
-            if (string.IsNullOrEmpty(walletModel.Id))
+            if (string.IsNullOrEmpty(model.Wallet.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Wallet Id cannot be empty"));
             }
-            if (string.IsNullOrEmpty(spendingCategoryModel.Id))
+            if (string.IsNullOrEmpty(model.SpendingCategory.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Spending category Id cannot be empty"));
             }
-            if (string.IsNullOrEmpty(spendingCategoryModel.Name))
+            if (string.IsNullOrEmpty(model.SpendingCategory.Name))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Spending category name cannot be empty"));
             }
-            var response = await _walletService.DeleteSpendingCategoryFromWalletAsync(walletModel, spendingCategoryModel);
+            var response = await _walletService.DeleteSpendingCategoryFromWalletAsync(model.Wallet, model.SpendingCategory);
             return GetResult(response);
         }
     }

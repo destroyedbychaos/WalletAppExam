@@ -50,7 +50,7 @@ namespace WalletApp.API.Controllers
             return GetResult(ServiceResponse.BadRequestResponse("Invalid card number entered"));
 
         }
-        [HttpDelete]
+        [HttpDelete("DeleteCard")]
         public async Task<IActionResult> DeleteAsync([FromQuery] string? id) //лише за айді спеціяльно
         {
             id = Request.Query[nameof(id)];
@@ -61,7 +61,7 @@ namespace WalletApp.API.Controllers
             }
             return GetResult(ServiceResponse.BadRequestResponse("Id of the card cannot be empty"));
         }
-        [HttpPost]
+        [HttpPost("CreateCard")]
         public async Task<IActionResult> CreateAsync(CardVM model)
         {
             if (!string.IsNullOrWhiteSpace(model.Id))
@@ -86,7 +86,7 @@ namespace WalletApp.API.Controllers
             var response = await _cardService.CreateAsync(model);
             return GetResult(response);
         }
-        [HttpPost]
+        [HttpPost("UpdateCard")]
         public async Task<IActionResult> UpdateAsync(CardVM model)
         {
             if (!string.IsNullOrWhiteSpace(model.Id))
@@ -111,87 +111,88 @@ namespace WalletApp.API.Controllers
             var response = await _cardService.UpdateAsync(model);
             return GetResult(response);
         }
-        [HttpPost]
-        public async Task<IActionResult> SetCurrency(CardVM cardModel, CurrencyVM currencyModel)
+
+        [HttpPost("SetCurrency")]
+        public async Task<IActionResult> SetCurrency(CardCurrencyVM model)
         {
-            if(!string.IsNullOrEmpty(currencyModel.Id))
+            if (!string.IsNullOrEmpty(model.Currency.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Currency must have an id"));
             }
-            if (!string.IsNullOrEmpty(currencyModel.Name))
+            if (!string.IsNullOrEmpty(model.Currency.Name))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Currency must have a name"));
             }
-            if (!string.IsNullOrEmpty(currencyModel.Code))
+            if (!string.IsNullOrEmpty(model.Currency.Code))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Currency must have a code"));
             }
-            if(currencyModel.ExchangeRateUSD == null || currencyModel.ExchangeRateUSD <= 0)
+            if (model.Currency.ExchangeRateUSD == null || model.Currency.ExchangeRateUSD <= 0)
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Currency must have an exchange rate above 0"));
             }
-            if (!string.IsNullOrWhiteSpace(cardModel.Id))
+            if (!string.IsNullOrWhiteSpace(model.Card.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Card must have an id"));
             }
-            if (!string.IsNullOrEmpty(cardModel.CurrencyCode))
+            if (!string.IsNullOrEmpty(model.Card.CurrencyCode))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Card must have a currency"));
             }
-            if (cardModel.CardNumber.ToString().Length > 16 || cardModel.CardNumber.ToString().Length < 16)
+            if (model.Card.CardNumber.ToString().Length > 16 || model.Card.CardNumber.ToString().Length < 16)
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Invalid card number"));
             }
-            if (cardModel.ExpirationDate.Year < DateTime.UtcNow.Year && cardModel.ExpirationDate.Month < DateTime.UtcNow.Month)
+            if (model.Card.ExpirationDate.Year < DateTime.UtcNow.Year && model.Card.ExpirationDate.Month < DateTime.UtcNow.Month)
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Invalid expiration date"));
             }
 
             ////////////////////////
-            
-            var response = await _cardService.SetCurrency(cardModel, currencyModel);
+
+            var response = await _cardService.SetCurrency(model.Card, model.Currency);
             return GetResult(response);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ConvertCurrencies(CardVM cardModel, CurrencyVM currencyModel)
+        [HttpPost("ConvertCardToCurrency")]
+        public async Task<IActionResult> ConvertCurrencies(CardCurrencyVM model)
         {
-            if (!string.IsNullOrEmpty(currencyModel.Id))
+            if (!string.IsNullOrEmpty(model.Currency.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Currency must have an id"));
             }
-            if (!string.IsNullOrEmpty(currencyModel.Name))
+            if (!string.IsNullOrEmpty(model.Currency.Name))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Currency must have a name"));
             }
-            if (!string.IsNullOrEmpty(currencyModel.Code))
+            if (!string.IsNullOrEmpty(model.Currency.Code))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Currency must have a code"));
             }
-            if (currencyModel.ExchangeRateUSD == null || currencyModel.ExchangeRateUSD <= 0)
+            if (model.Currency.ExchangeRateUSD == null || model.Currency.ExchangeRateUSD <= 0)
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Currency must have an exchange rate above 0"));
             }
-            if (!string.IsNullOrWhiteSpace(cardModel.Id))
+            if (!string.IsNullOrWhiteSpace(model.Card.Id))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Card must have an id"));
             }
-            if (!string.IsNullOrEmpty(cardModel.CurrencyCode))
+            if (!string.IsNullOrEmpty(model.Card.CurrencyCode))
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Card must have a currency"));
             }
-            if (cardModel.CardNumber.ToString().Length > 16 || cardModel.CardNumber.ToString().Length < 16)
+            if (model.Card.CardNumber.ToString().Length > 16 || model.Card.CardNumber.ToString().Length < 16)
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Invalid card number"));
             }
-            if (cardModel.ExpirationDate.Year < DateTime.UtcNow.Year && cardModel.ExpirationDate.Month < DateTime.UtcNow.Month)
+            if (model.Card.ExpirationDate.Year < DateTime.UtcNow.Year && model.Card.ExpirationDate.Month < DateTime.UtcNow.Month)
             {
                 return GetResult(ServiceResponse.BadRequestResponse("Invalid expiration date"));
             }
 
             //////////////////////////
             
-            var response = await _cardService.ConvertCurrencies(cardModel, currencyModel);
+            var response = await _cardService.ConvertCurrencies(model.Card, model.Currency);
             return GetResult(response);
         }
     }

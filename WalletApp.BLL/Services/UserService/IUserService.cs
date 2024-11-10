@@ -16,5 +16,7 @@ namespace WalletApp.BLL.Services.UserService
         Task<ServiceResponse> DeleteAsync(string id);
         Task<ServiceResponse> CreateAsync(CreateUpdateUserVM model);
         Task<ServiceResponse> UpdateAsync(CreateUpdateUserVM model);
+        Task<ServiceResponse> AddWalletToUserAsync(UserVM userModel, WalletVM walletModel);
+        Task<ServiceResponse> DeleteWalletFromUserAsync(UserVM userModel, WalletVM walletModel);
     }
 }

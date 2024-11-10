@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using WalletApp.DAL.Models;
 using WalletApp.DAL.Models.Identity;
 
 namespace WalletApp.DAL.Repositories.UserRepository
@@ -25,5 +26,7 @@ namespace WalletApp.DAL.Repositories.UserRepository
         Task<IdentityResult> UpdateAsync(User model);
         Task<IdentityResult> DeleteAsync(User model);
         Task<IdentityResult> AddToRoleAsync(User model, string role);
+        Task AddWalletToUserAsync(User model, Wallet wallet);
+        Task DeleteWalletFromUserAsync(User model, Wallet wallet);
     }
 }

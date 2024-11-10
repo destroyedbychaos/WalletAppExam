@@ -8,6 +8,7 @@ using WalletApp.DAL.Models.Identity;
 using WalletApp.DAL.ViewModels;
 using WalletApp.DAL;
 using WalletApp.DAL.Repositories.UserRepository;
+using WalletApp.DAL.Models;
 
 namespace WalletApp.BLL.Services.UserService
 {
@@ -148,12 +149,30 @@ namespace WalletApp.BLL.Services.UserService
 
             var result = await _userRepository.UpdateAsync(user);
 
-            if (user.UserRoles.First().Role.NormalizedName != model.Role.ToUpper())
-            {
-                // Видалити попередню роль та записати нову
-            }
-
             return ServiceResponse.ByIdentityResult(result, "Користувач успішно оновлений");
+        }
+
+        public async Task<ServiceResponse> AddWalletToUserAsync(UserVM userModel, WalletVM walletModel)
+        {
+            var user = await _userRepository.GetByIdAsync(userModel.Id);
+            var wallet = _mapper.Map<Wallet>(walletModel);
+            if (user != null && wallet != null)
+            {
+                await _userRepository.AddWalletToUserAsync(user, wallet);
+                return ServiceResponse.OkResponse("Added wallet to user", wallet);
+            }
+            return ServiceResponse.BadRequestResponse("Failed to add wallet to user");
+        }
+        public async Task<ServiceResponse> DeleteWalletFromUserAsync(UserVM userModel, WalletVM walletModel)
+        {
+            var user = await _userRepository.GetByIdAsync(userModel.Id);
+            var wallet = _mapper.Map<Wallet>(walletModel);
+            if (user != null && wallet != null)
+            {
+                await _userRepository.DeleteWalletFromUserAsync(user, wallet);
+                return ServiceResponse.OkResponse("Deleted wallet from user", wallet);
+            }
+            return ServiceResponse.BadRequestResponse("Failed to delete wallet from user");
         }
     }
 }

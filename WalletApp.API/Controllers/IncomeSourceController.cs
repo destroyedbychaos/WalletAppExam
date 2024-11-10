@@ -55,7 +55,7 @@ namespace WalletApp.API.Controllers
             var response = await _incomeSourceService.DeleteAsync(id);
             return GetResult(response);
         }
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateAsync(IncomeSourceVM model)
         {
             if (string.IsNullOrEmpty(model.Name))
@@ -69,7 +69,7 @@ namespace WalletApp.API.Controllers
             var response = await _incomeSourceService.CreateAsync(model);
             return GetResult(response);
         }
-        [HttpPost]
+        [HttpPost("Update")]
         public async Task<IActionResult> UpdateAsync(IncomeSourceVM model)
         {
             if (string.IsNullOrEmpty(model.Name))

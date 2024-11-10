@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using WalletApp.DAL.Models;
 using WalletApp.DAL.Models.Identity;
 
 namespace WalletApp.DAL.Repositories.UserRepository
@@ -103,6 +104,16 @@ namespace WalletApp.DAL.Repositories.UserRepository
         {
             var result = await _userManager.UpdateAsync(model);
             return result;
+        }
+        public async Task AddWalletToUserAsync(User model, Wallet wallet)
+        {
+            model.Wallets.Add(wallet);
+            await _userManager.UpdateAsync(model);
+        }
+        public async Task DeleteWalletFromUserAsync(User model, Wallet wallet)
+        {
+            model.Wallets.Remove(wallet);
+            await _userManager.UpdateAsync(model);
         }
     }
 }

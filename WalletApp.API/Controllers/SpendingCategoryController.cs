@@ -56,7 +56,7 @@ namespace WalletApp.API.Controllers
             var response = await _spendingCategoryService.DeleteAsync(id);
             return GetResult(response);
         }
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateAsync(SpendingCategoryVM model)
         {
             if (string.IsNullOrEmpty(model.Name))
@@ -70,7 +70,7 @@ namespace WalletApp.API.Controllers
             var response = await _spendingCategoryService.CreateAsync(model);
             return GetResult(response);
         }
-        [HttpPost]
+        [HttpPost("Updates")]
         public async Task<IActionResult> UpdateAsync(SpendingCategoryVM model)
         {
             if (string.IsNullOrEmpty(model.Name))
