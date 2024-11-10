@@ -36,9 +36,9 @@ namespace WalletApp.BLL.Services.WalletService
             }
             return ServiceResponse.BadRequestResponse("Wallet not retrieved");
         }
-        public async Task<ServiceResponse> GetByUsernameAsync(string name)
+        public async Task<ServiceResponse> GetByNameAsync(string name)
         {
-            var wallet = _walletRepository.GetByUsernameAsync(name);
+            var wallet = _walletRepository.GetByNameAsync(name);
             if (wallet != null)
             {
                 return ServiceResponse.OkResponse("Retrieved wallet", wallet);

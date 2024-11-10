@@ -12,7 +12,7 @@ namespace WalletApp.DAL.Repositories.WalletRepository
     {
         Task<List<Wallet?>> GetAllAsync();
         Task<Wallet?> GetByIdAsync(string id);
-        Task<Wallet?> GetByUsernameAsync(string name);
+        Task<Wallet?> GetByNameAsync(string name);
         Task CreateAsync(Wallet wallet);
         Task UpdateAsync(Wallet wallet);
         Task DeleteAsync(string id);

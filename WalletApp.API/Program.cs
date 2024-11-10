@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +13,19 @@ using WalletApp.DAL.Repositories.CurrencyRepository;
 using WalletApp.DAL.Repositories.IncomeSourceRepository;
 using WalletApp.DAL.Repositories.SpendingCategoryRepository;
 using WalletApp.DAL.Repositories.WalletRepository;
+using WalletApp.BLL.Middlewares;
+using WalletApp.BLL.Services.AccountService;
+using WalletApp.BLL.Services.JwtService;
+using WalletApp.BLL.Services.RoleRepository;
+using WalletApp.BLL.Services.RoleService;
+using WalletApp.BLL.Services.UserService;
+using WalletApp.DAL.Repositories.RoleRepository;
+using WalletApp.DAL.Repositories.UserRepository;
+using WalletApp.BLL.Services.CardService;
+using WalletApp.BLL.Services.SpendingCategoryService;
+using WalletApp.BLL.Services.IncomeSourceService;
+using WalletApp.BLL.Services.WalletService;
+using WalletApp.BLL.Services.MailService;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -71,9 +83,19 @@ builder.Services.AddAuthentication(options =>
     });
 
 // Add services
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<ICardService, CardService>();
+builder.Services.AddScoped<IIncomeSourceService, IncomeSourceService>();
+builder.Services.AddScoped<IMailService, MailService>();
+builder.Services.AddScoped<ISpendingCategoryService, SpendingCategoryService>();
+builder.Services.AddScoped<IWalletService, WalletService>();
 
 // Add repositories
-//builder.Services.AddScoped<IuserRepository, UserRepository>(); !!
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<ICardRepository, CardRepository>();
 builder.Services.AddScoped<ICurrencyRepository, CurrencyRepository>();
 builder.Services.AddScoped<IIncomeSourceRepository, IncomeSourceRepository>();
@@ -86,11 +108,11 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
+builder.Services.AddSwaggerGen(optinons =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo { Title = "NPR321", Version = "v1" });
+    optinons.SwaggerDoc("v1", new OpenApiInfo { Title = "NPR321", Version = "v1" });
 
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    optinons.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
@@ -100,7 +122,7 @@ builder.Services.AddSwaggerGen(options =>
         Description = "¬вед≥ть JWT токен"
     });
 
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    optinons.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
             new OpenApiSecurityScheme
@@ -116,7 +138,6 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-//builder.Services.AddApplicationInsightsTelemetry();
 
 var app = builder.Build();
 
@@ -127,8 +148,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseMiddleware<MiddlewareExceptionHandling>();
-//app.UseMiddleware<MiddlewareSecurityTokenExceptionHandling>();
+app.UseMiddleware<MiddlewareExceptionHandling>();
+app.UseMiddleware<MiddlewareSecurityTokenExceptionHandling>();
 
 app.UseHttpsRedirection();
 
@@ -137,17 +158,12 @@ app.UseAuthorization();
 
 app.UseCors(myAllowSpecificOrigins);
 
-//app.UseStaticFiles(new StaticFileOptions
-//{
-    //FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "data")),
-    //RequestPath = "/files"
-//});
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "data")),
+    RequestPath = "/files"
+});
 
-//app.UseStaticFiles(new StaticFileOptions
-//{
-    //FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "data/images")),
-    //RequestPath = "/images"
-//});
 
 app.MapControllers();
 

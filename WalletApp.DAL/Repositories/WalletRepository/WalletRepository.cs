@@ -32,7 +32,7 @@ namespace WalletApp.DAL.Repositories.WalletRepository
             return await _appDbContext.Wallets.FirstOrDefaultAsync(w => w.UserId == id);
         }
 
-        public async Task<Wallet?> GetByUsernameAsync(string name)
+        public async Task<Wallet?> GetByNameAsync(string name)
         {
             User user = await _userManager.FindByNameAsync(name);
             return await _appDbContext.Wallets.FirstOrDefaultAsync(w => w.UserId == user.Id);

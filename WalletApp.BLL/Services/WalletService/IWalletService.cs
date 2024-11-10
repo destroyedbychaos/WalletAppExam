@@ -12,7 +12,7 @@ namespace WalletApp.BLL.Services.WalletService
     {
         Task<ServiceResponse> GetAllAsync();
         Task<ServiceResponse> GetByIdAsync(string id);
-        Task<ServiceResponse> GetByUsernameAsync(string name);
+        Task<ServiceResponse> GetByNameAsync(string name);
         Task<ServiceResponse> CreateAsync(WalletVM model);
         Task<ServiceResponse> UpdateAsync(WalletVM model);
         Task<ServiceResponse> DeleteAsync(string id);
