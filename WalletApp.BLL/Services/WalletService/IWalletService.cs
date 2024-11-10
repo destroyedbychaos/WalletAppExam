@@ -17,5 +17,10 @@ namespace WalletApp.BLL.Services.WalletService
         Task<ServiceResponse> UpdateAsync(WalletVM model);
         Task<ServiceResponse> DeleteAsync(string id);
         Task<ServiceResponse> AddCardToWalletAsync(WalletVM walletModel, CardVM cardModel);
+        Task<ServiceResponse> DeleteCardFromWalletAsync(WalletVM walletModel, CardVM cardModel);
+        Task<ServiceResponse> AddIncomeSourceToWalletAsync(WalletVM walletModel, IncomeSourceVM incomeSourceModel);
+        Task<ServiceResponse> DeleteIncomeSourceFromWalletAsync(WalletVM wallet, IncomeSourceVM incomeSourceModel);
+        Task<ServiceResponse> AddSpendingCategoryToWalletAsync(WalletVM walletModel, SpendingCategoryVM spendingCategoryModel);
+        Task<ServiceResponse> DeleteSpendingCategoryFromWalletAsync(WalletVM walletModel, SpendingCategoryVM spendingCategoryModel);
     }
 }

@@ -17,8 +17,8 @@ namespace WalletApp.DAL.Repositories.WalletRepository
     {
         private readonly AppDbContext _appDbContext;
         private readonly UserManager<User> _userManager;
-        public WalletRepository(AppDbContext appDbContext, UserManager<User> userManager) 
-        { 
+        public WalletRepository(AppDbContext appDbContext, UserManager<User> userManager)
+        {
             _appDbContext = appDbContext;
             _userManager = userManager;
 
@@ -37,17 +37,17 @@ namespace WalletApp.DAL.Repositories.WalletRepository
             User user = await _userManager.FindByNameAsync(name);
             return await _appDbContext.Wallets.FirstOrDefaultAsync(w => w.UserId == user.Id);
         }
-        public async Task CreateAsync(Wallet wallet) 
+        public async Task CreateAsync(Wallet wallet)
         {
             await _appDbContext.Wallets.AddAsync(wallet);
             await _appDbContext.SaveChangesAsync();
         }
-        public async Task UpdateAsync(Wallet wallet) 
-        { 
+        public async Task UpdateAsync(Wallet wallet)
+        {
             _appDbContext.Wallets.Update(wallet);
             await _appDbContext.SaveChangesAsync();
         }
-        public async Task DeleteAsync(string id) 
+        public async Task DeleteAsync(string id)
         {
             var wallet = await GetByIdAsync(id);
             if (wallet != null)
@@ -59,6 +59,31 @@ namespace WalletApp.DAL.Repositories.WalletRepository
         public async Task AddCardToWalletAsync(Wallet wallet, Card card)
         {
             wallet.Cards.Add(card);
+            await _appDbContext.SaveChangesAsync();
+        }
+        public async Task DeleteCardFromWalletAsync(Wallet wallet, Card card)
+        {
+            wallet.Cards.Remove(card);
+            await _appDbContext.SaveChangesAsync();
+        }
+        public async Task AddIncomeSourceToWalletAsync(Wallet wallet, IncomeSource incomeSource)
+        {
+            wallet.IncomeSources.Add(incomeSource);
+            await _appDbContext.SaveChangesAsync();
+        }
+        public async Task DeleteIncomeSourceFromWalletAsync(Wallet wallet, IncomeSource incomeSource)
+        {
+            wallet.IncomeSources.Remove(incomeSource);
+            await _appDbContext.SaveChangesAsync();
+        }
+        public async Task AddSpendingCategoryToWalletAsync(Wallet wallet, SpendingCategory spendingCategory)
+        {
+            wallet.SpendingCategories.Add(spendingCategory);
+            await _appDbContext.SaveChangesAsync();
+        }
+        public async Task DeleteSpendingCategoryFromWalletAsync(Wallet wallet, SpendingCategory spendingCategory)
+        {
+            wallet.SpendingCategories.Remove(spendingCategory);
             await _appDbContext.SaveChangesAsync();
         }
     }

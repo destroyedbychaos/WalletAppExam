@@ -17,5 +17,10 @@ namespace WalletApp.DAL.Repositories.WalletRepository
         Task UpdateAsync(Wallet wallet);
         Task DeleteAsync(string id);
         Task AddCardToWalletAsync(Wallet wallet, Card card);
+        Task DeleteCardFromWalletAsync(Wallet wallet, Card card);
+        Task AddIncomeSourceToWalletAsync(Wallet wallet, IncomeSource incomeSource);
+        Task DeleteIncomeSourceFromWalletAsync(Wallet wallet, IncomeSource incomeSource);
+        Task AddSpendingCategoryToWalletAsync(Wallet wallet, SpendingCategory spendingCategory);
+        Task DeleteSpendingCategoryFromWalletAsync(Wallet wallet, SpendingCategory spendingCategory);
     }
 }
