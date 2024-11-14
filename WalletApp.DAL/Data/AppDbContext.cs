@@ -82,7 +82,7 @@ namespace WalletApp.DAL.Data
                 entity.HasKey(c => c.Id);
                 entity.Property(c => c.CardNumber).HasMaxLength(16);
                 entity.Property(c => c.ExpirationDate).HasColumnType("date");
-                entity.Property(c => c.Currency).IsRequired().HasMaxLength(3);
+                entity.Property(c => c.CurrencyCode).IsRequired().HasMaxLength(3);
                 entity.Property(c => c.Balance).HasColumnType("decimal(18,2)");
 
                 entity.HasOne(c => c.Wallet)

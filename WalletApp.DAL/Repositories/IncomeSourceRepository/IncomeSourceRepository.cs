@@ -16,7 +16,7 @@ namespace WalletApp.DAL.Repositories.IncomeSourceRepository
         { 
             _appDbContext = appDbContext;
         }
-        public async Task<List<IncomeSource>> GetAll()
+        public async Task<List<IncomeSource>> GetAllAsync()
         {
             return await _appDbContext.IncomeSources.ToListAsync();
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WalletApp.BLL.Services;
 using WalletApp.BLL.Services.IncomeSourceService;
+using WalletApp.BLL.Validators;
 using WalletApp.DAL.Repositories.IncomeSourceRepository;
 using WalletApp.DAL.ViewModels;
 
@@ -58,30 +59,30 @@ namespace WalletApp.API.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> CreateAsync(IncomeSourceVM model)
         {
-            if (string.IsNullOrEmpty(model.Name))
+            var validator = new IncomeSourceValidator();
+            var validateResult = await validator.ValidateAsync(model);
+
+            if (validateResult.IsValid)
             {
-                return GetResult(ServiceResponse.BadRequestResponse("Wallet cannot be unnamed"));
+                var response = await _incomeSourceService.CreateAsync(model);
+                return GetResult(response);
             }
-            if (string.IsNullOrEmpty(model.Id))
-            {
-                return GetResult(ServiceResponse.BadRequestResponse("Wallet Id cannot be empty"));
-            }
-            var response = await _incomeSourceService.CreateAsync(model);
-            return GetResult(response);
+            return GetResult(ServiceResponse.BadRequestResponse("Invalid income source info entered"));
         }
         [HttpPost("Update")]
         public async Task<IActionResult> UpdateAsync(IncomeSourceVM model)
         {
-            if (string.IsNullOrEmpty(model.Name))
+            var validator = new IncomeSourceValidator();
+            var validateResult = validator.Validate(model);
+            
+            if (validateResult.IsValid)
             {
-                return GetResult(ServiceResponse.BadRequestResponse("Wallet cannot be unnamed"));
+                var response = await _incomeSourceService.UpdateAsync(model);
+                return GetResult(response);
             }
-            if (string.IsNullOrEmpty(model.Id))
-            {
-                return GetResult(ServiceResponse.BadRequestResponse("Wallet Id cannot be empty"));
-            }
-            var response = await _incomeSourceService.UpdateAsync(model);
-            return GetResult(response);
+            return GetResult(ServiceResponse.BadRequestResponse("Invalid income source info entered"));
+
+           
         }
     }
 }

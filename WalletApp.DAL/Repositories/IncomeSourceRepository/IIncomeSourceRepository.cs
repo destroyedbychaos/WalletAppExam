@@ -9,7 +9,7 @@ namespace WalletApp.DAL.Repositories.IncomeSourceRepository
 {
     public interface IIncomeSourceRepository
     {
-        Task<List<IncomeSource?>> GetAll();
+        Task<List<IncomeSource?>> GetAllAsync();
         Task<IncomeSource?> GetByIdAsync(string id);
         Task<IncomeSource?> GetByNameAsync(string name);
         Task CreateAsync(IncomeSource incomeSource);

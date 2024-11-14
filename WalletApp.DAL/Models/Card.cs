@@ -16,6 +16,7 @@ namespace WalletApp.DAL.Models
         public int CardNumber { get; set; }
         public DateOnly ExpirationDate { get; set; }
         public decimal Balance { get; set; }
+        public string CurrencyCode { get; set; }
         public string WalletId { get; set; }
         public Wallet Wallet { get; set; }
         public string CurrencyId { get; set; }

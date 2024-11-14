@@ -9,6 +9,7 @@ namespace WalletApp.DAL.Repositories.CurrencyRepository
 {
     public interface ICurrencyRepository
     {
+        Task<List<Currency?>?> GetAllAsync();
         Task<Currency?> GetByIdAsync(string id);
         Task<Currency?> GetByCodeAsync(string code);
         Task CreateAsync(Currency currency);

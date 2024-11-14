@@ -21,7 +21,7 @@ namespace WalletApp.BLL.Services.IncomeSourceService
         }
         public async Task<ServiceResponse> GetAllAsync()
         {
-            var incomeSources = await _incomeSourceRepository.GetAll();
+            var incomeSources = await _incomeSourceRepository.GetAllAsync();
             return ServiceResponse.OkResponse("Received income sources", incomeSources);
         }
         public async Task<ServiceResponse> GetByIdAsync(string id)

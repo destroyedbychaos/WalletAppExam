@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.Json;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,10 @@ namespace WalletApp.DAL.Repositories.CurrencyRepository
         public CurrencyRepository(AppDbContext appDbContext) 
         { 
             _appDbContext = appDbContext;
+        }
+        public async Task<List<Currency?>?> GetAllAsync()
+        {
+            return await _appDbContext.Currencies.ToListAsync();
         }
         public async Task<Currency?> GetByIdAsync(string id)
         {

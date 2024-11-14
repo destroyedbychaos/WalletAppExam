@@ -4,6 +4,7 @@ using WalletApp.BLL.Services;
 using WalletApp.DAL.ViewModels;
 using WalletApp.BLL.Services.SpendingCategoryService;
 using WalletApp.DAL.Models;
+using WalletApp.BLL.Validators;
 
 namespace WalletApp.API.Controllers
 {
@@ -59,30 +60,30 @@ namespace WalletApp.API.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> CreateAsync(SpendingCategoryVM model)
         {
-            if (string.IsNullOrEmpty(model.Name))
+            var validator = new SpendingCategoryValidator();
+            var validateResult = await validator.ValidateAsync(model);
+
+            if (validateResult.IsValid)
             {
-                return GetResult(ServiceResponse.BadRequestResponse("Wallet cannot be unnamed"));
+                var response = await _spendingCategoryService.CreateAsync(model);
+                return GetResult(response);
             }
-            if (string.IsNullOrEmpty(model.Id))
-            {
-                return GetResult(ServiceResponse.BadRequestResponse("Wallet Id cannot be empty"));
-            }
-            var response = await _spendingCategoryService.CreateAsync(model);
-            return GetResult(response);
+            return GetResult(ServiceResponse.BadRequestResponse("Invalid spending category entered"));
+
         }
         [HttpPost("Updates")]
         public async Task<IActionResult> UpdateAsync(SpendingCategoryVM model)
         {
-            if (string.IsNullOrEmpty(model.Name))
+            var validator = new SpendingCategoryValidator();
+            var validateResult = await validator.ValidateAsync(model);
+
+            if (validateResult.IsValid)
             {
-                return GetResult(ServiceResponse.BadRequestResponse("Wallet cannot be unnamed"));
+                var response = await _spendingCategoryService.UpdateAsync(model);
+                return GetResult(response);
             }
-            if (string.IsNullOrEmpty(model.Id))
-            {
-                return GetResult(ServiceResponse.BadRequestResponse("Wallet Id cannot be empty"));
-            }
-            var response = await _spendingCategoryService.UpdateAsync(model);
-            return GetResult(response);
+            return GetResult(ServiceResponse.BadRequestResponse("Invalid spending category entered"));
+
         }
     }
 }
