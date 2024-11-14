@@ -68,7 +68,7 @@ namespace WalletApp.API.Controllers
                 var response = await _spendingCategoryService.CreateAsync(model);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid spending category entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResult.Errors.First().ErrorMessage));
 
         }
         [HttpPost("Updates")]
@@ -82,7 +82,7 @@ namespace WalletApp.API.Controllers
                 var response = await _spendingCategoryService.UpdateAsync(model);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid spending category entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResult.Errors.First().ErrorMessage));
 
         }
     }

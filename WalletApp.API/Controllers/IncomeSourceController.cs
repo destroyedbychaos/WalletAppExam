@@ -67,7 +67,7 @@ namespace WalletApp.API.Controllers
                 var response = await _incomeSourceService.CreateAsync(model);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid income source info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResult.Errors.First().ErrorMessage));
         }
         [HttpPost("Update")]
         public async Task<IActionResult> UpdateAsync(IncomeSourceVM model)
@@ -80,7 +80,7 @@ namespace WalletApp.API.Controllers
                 var response = await _incomeSourceService.UpdateAsync(model);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid income source info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResult.Errors.First().ErrorMessage));
 
            
         }

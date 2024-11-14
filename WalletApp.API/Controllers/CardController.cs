@@ -73,7 +73,7 @@ namespace WalletApp.API.Controllers
                 var response = await _cardService.CreateAsync(model);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid card info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResult.Errors.First().ErrorMessage));
         }
         [HttpPost("UpdateCard")]
         public async Task<IActionResult> UpdateAsync(CardVM model)
@@ -86,7 +86,7 @@ namespace WalletApp.API.Controllers
                 var response = await _cardService.UpdateAsync(model);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid card info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResult.Errors.First().ErrorMessage));
         }
 
         [HttpPost("SetCurrency")]
@@ -102,7 +102,7 @@ namespace WalletApp.API.Controllers
                 var response = await _cardService.SetCurrency(model.Card, model.Currency);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResultCard.Errors.First().ErrorMessage + validateResultCurrency.Errors.First().ErrorMessage));
         }
 
         [HttpPost("ConvertCardToCurrency")]
@@ -118,7 +118,7 @@ namespace WalletApp.API.Controllers
                 var response = await _cardService.ConvertCurrencies(model.Card, model.Currency);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResultCard.Errors.First().ErrorMessage + validateResultCurrency.Errors.First().ErrorMessage));
 
 
         }

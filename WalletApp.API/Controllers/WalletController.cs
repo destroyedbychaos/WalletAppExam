@@ -65,7 +65,7 @@ namespace WalletApp.API.Controllers
                 var response = await _walletService.CreateAsync(model);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid wallet info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResult.Errors.First().ErrorMessage));
 
         }
         [HttpPost("UpdateWallet")]
@@ -78,7 +78,7 @@ namespace WalletApp.API.Controllers
                 var response = await _walletService.UpdateAsync(model);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid wallet info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResult.Errors.First().ErrorMessage));
 
 
         }
@@ -95,7 +95,7 @@ namespace WalletApp.API.Controllers
                 var response = await _walletService.AddCardToWalletAsync(model.Wallet, model.Card);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResultWallet.Errors.First().ErrorMessage + validateResultCard.Errors.First().ErrorMessage));
             
 
         }
@@ -112,7 +112,7 @@ namespace WalletApp.API.Controllers
                 var response = await _walletService.DeleteCardFromWalletAsync(model.Wallet, model.Card);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResultWallet.Errors.First().ErrorMessage + validateResultCard.Errors.First().ErrorMessage));
 
 
         }
@@ -129,7 +129,7 @@ namespace WalletApp.API.Controllers
                 var response = await _walletService.AddIncomeSourceToWalletAsync(model.Wallet, model.IncomeSource);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResultWallet.Errors.First().ErrorMessage + validateResultIncomeSource.Errors.First().ErrorMessage));
         }
         [HttpDelete("DeleteIncomeSourceFromWallet")]
         public async Task<IActionResult> DeleteIncomeSourceFromWallet(WalletIncomeSourceVM model)
@@ -144,7 +144,7 @@ namespace WalletApp.API.Controllers
             var response = await _walletService.DeleteIncomeSourceFromWalletAsync(model.Wallet,model.IncomeSource);
             return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResultWallet.Errors.First().ErrorMessage + validateResultIncomeSource.Errors.First().ErrorMessage));
 
         }
         [HttpPost("AddSpendingCategoryToWallet")]
@@ -160,7 +160,7 @@ namespace WalletApp.API.Controllers
                 var response = await _walletService.AddSpendingCategoryToWalletAsync(model.Wallet, model.SpendingCategory);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResultWallet.Errors.First().ErrorMessage + validateResultSpendingCategory.Errors.First().ErrorMessage));
         }
         [HttpDelete("DeleteSpendingCategoryFromWallet")]
         public async Task<IActionResult> DeleteSpendingCategoryFromWallet(WalletSpendingCategoryVM model)
@@ -175,7 +175,7 @@ namespace WalletApp.API.Controllers
                 var response = await _walletService.DeleteSpendingCategoryFromWalletAsync(model.Wallet, model.SpendingCategory);
                 return GetResult(response);
             }
-            return GetResult(ServiceResponse.BadRequestResponse("Invalid info entered"));
+            return GetResult(ServiceResponse.BadRequestResponse(validateResultWallet.Errors.First().ErrorMessage + validateResultSpendingCategory.Errors.First().ErrorMessage));
 
         }
     }

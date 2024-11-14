@@ -26,6 +26,7 @@ using WalletApp.BLL.Services.SpendingCategoryService;
 using WalletApp.BLL.Services.IncomeSourceService;
 using WalletApp.BLL.Services.WalletService;
 using WalletApp.BLL.Services.MailService;
+using WalletApp.DAL.Data.Initializer;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -167,6 +168,6 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.MapControllers();
 
-//app.SeedData();
+//app.SeedData();  !!!!!!!!FINISH SEEDER FIRST 
 
 app.Run();
