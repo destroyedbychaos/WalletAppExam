@@ -1,7 +1,5 @@
-
-**
 # Wallet App
-**
+
 Wallet App is a personal finance management application designed to help user track their wallets, cards, incomes, and expenses in multiple currencies.
 
 **Features**
